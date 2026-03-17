@@ -17,6 +17,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
+// Keep Panda references out, update to ClientPilot logic as base
+
 type NavItem = {
   label: string;
   href: string;
@@ -26,7 +28,7 @@ type NavItem = {
 
 const sections: { title: string; items: NavItem[] }[] = [
   {
-    title: "Platform",
+    title: "CRM",
     items: [
       { label: "Overview", href: "/dashboard", icon: Home },
       {
