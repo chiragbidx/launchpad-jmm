@@ -8,8 +8,9 @@ import ErrorReporter from "../components/ErrorReporter";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Panda - SaaS App Builder Starter",
-  description: "Production-ready SaaS app builder starter template with modern UI, dark mode, and launch-ready sections.",
+  title: "ClientPilot – Internal CRM App Boilerplate",
+  description:
+    "ClientPilot is a production-ready Next.js boilerplate: authentication, team management, polished UI, and launch workflows for CRM and dashboard apps.",
 };
 
 export default function RootLayout({
@@ -24,7 +25,7 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} font-sans`}
     >
       <head>
-        {/*
+        {/* 
           PANDA ELEMENT SELECTION SCRIPT
           ===============================
           Captures all element clicks inside the iframe and sends metadata to Bubble via postMessage.
@@ -35,7 +36,7 @@ export default function RootLayout({
           src="https://bfwqdadlcyndtaqmqtci.supabase.co/storage/v1/object/public/pandajs/panda-element-selection.js"
           strategy="afterInteractive"
         />
-        {/*
+        {/* 
           PANDA BRANDING SCRIPT
           ====================
           Handles Panda-specific branding, logos, placeholders, and runtime injection for the iframe/editor.
