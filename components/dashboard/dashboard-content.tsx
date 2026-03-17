@@ -15,6 +15,8 @@ import {
   TrendingUp,
   Users,
   Zap,
+  Contact2,
+  Briefcase,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +40,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-// Content logic for ClientPilot (no Panda references)
 type Metric = {
   label: string;
   value: string;
@@ -69,10 +70,10 @@ type MockProject = {
 };
 
 const metrics: Metric[] = [
-  { label: "Total Contacts", value: "2,847", trend: "+12.4%", icon: Users, description: "vs last month" },
-  { label: "Active Pipelines", value: "38", trend: "+6.1%", icon: FolderKanban, description: "vs last month" },
-  { label: "Revenue", value: "$48,290", trend: "+18.2%", icon: DollarSign, description: "vs last month" },
-  { label: "Growth Rate", value: "24.5%", trend: "+3.1%", icon: TrendingUp, description: "vs last month" },
+  { label: "Total Contacts", value: "0", trend: "+0%", icon: Users, description: "vs last month" },
+  { label: "Active Pipelines", value: "0", trend: "+0%", icon: FolderKanban, description: "vs last month" },
+  { label: "Revenue", value: "$0", trend: "+0%", icon: DollarSign, description: "vs last month" },
+  { label: "Growth Rate", value: "0%", trend: "+0%", icon: TrendingUp, description: "vs last month" },
 ];
 
 const onboardingSteps: OnboardingStep[] = [
@@ -82,120 +83,13 @@ const onboardingSteps: OnboardingStep[] = [
   { title: "Set up billing", description: "Add a payment method for premium.", href: "#", done: false },
 ];
 
-const recentActivity: ActivityItem[] = [
-  { title: "New contact added", detail: "jane@company.com added to Contacts", time: "2 min ago", icon: Users },
-  { title: "Pipeline started", detail: "New sales pipeline for Q3", time: "28 min ago", icon: Zap },
-  { title: "Invoice paid", detail: "INV-8921 was paid — $2,499.00", time: "1 hr ago", icon: DollarSign },
-  { title: "Team invited", detail: "2 users invited to team", time: "3 hr ago", icon: Users },
-  { title: "Project created", detail: "New CRM project 'West Coast Leads'", time: "5 hr ago", icon: FolderKanban },
-];
-
 const quickActions = [
   { label: "Invite a member", href: "/dashboard/team", icon: Users },
   { label: "Account settings", href: "/dashboard/settings", icon: Activity },
   { label: "View activity", href: "#", icon: Bell },
 ];
 
-const weeklyData = [
-  { day: "Mon", users: 18, revenue: 1200 },
-  { day: "Tue", users: 27, revenue: 1480 },
-  { day: "Wed", users: 35, revenue: 1290 },
-  { day: "Thu", users: 22, revenue: 1610 },
-  { day: "Fri", users: 33, revenue: 1520 },
-  { day: "Sat", users: 28, revenue: 1180 },
-  { day: "Sun", users: 18, revenue: 1140 },
-];
-
-const monthlyRevenue = [
-  { month: "Jan", value: 12400 },
-  { month: "Feb", value: 15800 },
-  { month: "Mar", value: 14200 },
-  { month: "Apr", value: 18600 },
-  { month: "May", value: 22100 },
-  { month: "Jun", value: 19800 },
-  { month: "Jul", value: 24500 },
-  { month: "Aug", value: 28300 },
-  { month: "Sep", value: 26100 },
-  { month: "Oct", value: 31200 },
-  { month: "Nov", value: 35800 },
-  { month: "Dec", value: 48290 },
-];
-
-const initialMockProjects: MockProject[] = [
-  { id: "p-1", name: "CRM Dashboard Setup", owner: "Ava", status: "Draft" },
-  { id: "p-2", name: "Contact Import Utility", owner: "Liam", status: "In Review" },
-  { id: "p-3", name: "Account Reports", owner: "Noah", status: "Published" },
-];
-
-function BarChart({ data }: { data: typeof weeklyData }) {
-  const maxUsers = Math.max(...data.map((d) => d.users));
-
-  return (
-    <div className="space-y-2">
-      <div className="flex items-end gap-1.5 h-[140px]">
-        {data.map((d) => {
-          const height = (d.users / maxUsers) * 100;
-          return (
-            <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-              <span className="text-[10px] text-muted-foreground font-medium">{d.users}</span>
-              <div
-                className="w-full rounded-t-md bg-primary/80 transition-all hover:bg-primary min-h-[4px]"
-                style={{ height: `${height}%` }}
-              />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex gap-1.5">
-        {data.map((d) => (
-          <div key={d.day} className="flex-1 text-center text-[10px] text-muted-foreground">
-            {d.day}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function AreaChart({ data }: { data: typeof monthlyRevenue }) {
-  const maxVal = Math.max(...data.map((d) => d.value));
-  const minVal = Math.min(...data.map((d) => d.value)) * 0.8;
-  const range = maxVal - minVal;
-  const w = 400;
-  const h = 140;
-  const padding = 4;
-
-  const points = data.map((d, i) => ({
-    x: padding + (i / (data.length - 1)) * (w - padding * 2),
-    y: h - padding - ((d.value - minVal) / range) * (h - padding * 2),
-  }));
-
-  const linePath = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
-  const areaPath = `${linePath} L ${points[points.length - 1].x} ${h} L ${points[0].x} ${h} Z`;
-
-  return (
-    <div className="space-y-2">
-      <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-[140px]" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.02" />
-          </linearGradient>
-        </defs>
-        <path d={areaPath} fill="url(#areaGradient)" />
-        <path d={linePath} fill="none" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinejoin="round" />
-        {points.map((p, i) => (
-          <circle key={i} cx={p.x} cy={p.y} r="3" fill="hsl(var(--background))" stroke="hsl(var(--primary))" strokeWidth="1.5" />
-        ))}
-      </svg>
-      <div className="flex justify-between px-1">
-        {data.filter((_, i) => i % 2 === 0).map((d) => (
-          <span key={d.month} className="text-[10px] text-muted-foreground">{d.month}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
+const initialMockProjects: MockProject[] = [];
 
 function matchesQuery(query: string, ...fields: string[]): boolean {
   const q = query.toLowerCase();
@@ -218,18 +112,11 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
     [query]
   );
 
-  const filteredActivity = useMemo(
-    () => (query ? recentActivity.filter((a) => matchesQuery(query, a.title, a.detail)) : recentActivity),
-    [query]
-  );
-
   const showMetrics = filteredMetrics.length > 0;
   const showOnboarding = filteredSteps.length > 0;
-  const showCharts = !query || matchesQuery(query, "performance", "chart", "graph", "revenue", "engagement", "weekly", "monthly");
-  const showActivity = filteredActivity.length > 0;
-  const showCrudExample =
-    !query || matchesQuery(query, "crud", "dialog", "modal", "project", "create", "edit");
-  const noResults = !showMetrics && !showOnboarding && !showCharts && !showActivity && !showCrudExample;
+  const showCrudExample = !query || matchesQuery(query, "crud", "dialog", "modal", "project", "create", "edit");
+  const noProjects = projects.length === 0;
+  const noResults = !showMetrics && !showOnboarding && !showCrudExample;
 
   function openCreateDialog() {
     setEditingProject(null);
@@ -267,7 +154,6 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
 
   return (
     <>
-      {/* Welcome banner */}
       <div className="mb-8 space-y-4">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -275,7 +161,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
               {greeting}, {firstName}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Here&apos;s what&apos;s happening in your CRM workspace today.
+              Welcome to your ClientPilot dashboard. Start by adding contacts, inviting your team or setting up your first workflow.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -303,7 +189,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search dashboard..."
+            placeholder="Search dashboard (e.g. Contacts, Team, Projects)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="pl-9 h-10 bg-muted/50 border-muted-foreground/15 focus-visible:border-border focus-visible:bg-background"
@@ -317,7 +203,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
             <Search className="size-10 text-muted-foreground/30 mb-3" />
             <p className="text-sm font-medium">No results found</p>
             <p className="text-xs text-muted-foreground mt-1">
-              Try a different search term or clear the filter.
+              Try a different search term, or clear filters.
             </p>
           </CardContent>
         </Card>
@@ -354,126 +240,94 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
         </div>
       )}
 
-      {/* Middle section */}
-      {(showOnboarding || showCharts) && (
-        <div className="mb-8 grid gap-6 lg:grid-cols-5">
-          {showOnboarding && (
-            <Card className="lg:col-span-2">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">Getting Started</CardTitle>
-                  <Badge variant="outline" className="text-xs">
-                    0 / {onboardingSteps.length}
-                  </Badge>
-                </div>
-                <CardDescription>Complete these steps to set up your workspace.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-1">
-                {filteredSteps.map((step) => (
-                  <Link
-                    key={step.title}
-                    href={step.href}
-                    className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-accent"
-                  >
-                    {step.done ? (
-                      <CheckCircle2 className="size-[18px] shrink-0 text-emerald-500" />
-                    ) : (
-                      <Circle className="size-[18px] shrink-0 text-muted-foreground/40" />
-                    )}
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-medium leading-none">{step.title}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>
-                    </div>
-                    <ArrowRight className="size-4 shrink-0 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-muted-foreground" />
-                  </Link>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {showCharts && (
-            <Card className={showOnboarding ? "lg:col-span-3" : "lg:col-span-5"}>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-base">Weekly Contacts Added</CardTitle>
-                    <CardDescription>New contacts this week</CardDescription>
-                  </div>
-                  <Badge variant="outline" className="text-xs font-medium">
-                    171 total
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <BarChart data={weeklyData} />
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      )}
-
-      {/* Revenue chart */}
-      {showCharts && (
-        <div className="mb-8">
+      {/* Onboarding steps */}
+      {showOnboarding && (
+        <div className="mb-8 grid gap-6 w-full max-w-2xl mx-auto">
           <Card>
-            <CardHeader>
+            <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-base">Revenue Overview</CardTitle>
-                  <CardDescription>Monthly revenue for the current year</CardDescription>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold tracking-tight">$48,290</p>
-                  <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">+18.2% from last month</p>
-                </div>
+                <CardTitle className="text-base">Getting Started</CardTitle>
+                <Badge variant="outline" className="text-xs">
+                  0 / {onboardingSteps.length}
+                </Badge>
               </div>
+              <CardDescription>
+                Let’s get your CRM running. All features are live and production-ready.
+              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <AreaChart data={monthlyRevenue} />
+            <CardContent className="space-y-1">
+              {filteredSteps.map((step) => (
+                <Link
+                  key={step.title}
+                  href={step.href}
+                  className="group flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-accent"
+                >
+                  {step.done ? (
+                    <CheckCircle2 className="size-[18px] shrink-0 text-emerald-500" />
+                  ) : (
+                    <Circle className="size-[18px] shrink-0 text-muted-foreground/40" />
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium leading-none">{step.title}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{step.description}</p>
+                  </div>
+                  <ArrowRight className="size-4 shrink-0 text-muted-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:text-muted-foreground" />
+                </Link>
+              ))}
             </CardContent>
           </Card>
         </div>
       )}
 
+      {/* Projects/records empty state */}
       {showCrudExample && (
         <div className="mb-8">
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <CardTitle className="text-base">Projects</CardTitle>
+                  <CardTitle className="text-base">Your Records</CardTitle>
                   <CardDescription>
-                    Create and update your CRM/internal projects
+                    You can add “Projects,” “Accounts,” or other records for your CRM below.
                   </CardDescription>
                 </div>
                 <Button size="sm" onClick={openCreateDialog}>
-                  Create project
+                  Add Record
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                {projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="flex items-center justify-between rounded-md border border-border/70 p-3"
-                  >
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium">{project.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Owner: {project.owner} • Status: {project.status}
-                      </p>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openEditDialog(project)}
+              {noProjects ? (
+                <div className="flex flex-col gap-4 items-center py-8">
+                  <Contact2 className="size-10 text-muted-foreground/30" />
+                  <span className="text-sm text-muted-foreground">
+                    Nothing here yet. Click &quot;Add Record&quot; to get started with your first CRM project or workflow!
+                  </span>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {projects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="flex items-center justify-between rounded-md border border-border/70 p-3"
                     >
-                      Edit
-                    </Button>
-                  </div>
-                ))}
-              </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium">{project.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Owner: {project.owner} • Status: {project.status}
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => openEditDialog(project)}
+                      >
+                        Edit
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -481,21 +335,21 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>
-                  {editingProject ? "Edit project" : "Create project"}
+                  {editingProject ? "Edit Record" : "Add Record"}
                 </DialogTitle>
                 <DialogDescription>
-                  This is mock data in local component state. No backend call is made.
+                  This is demo data in local component state. Connect real data models to make this section actionable for your organization.
                 </DialogDescription>
               </DialogHeader>
 
               <form onSubmit={handleSaveProject} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="project-name">Project name</Label>
+                  <Label htmlFor="project-name">Name</Label>
                   <Input
                     id="project-name"
                     name="name"
                     defaultValue={editingProject?.name ?? ""}
-                    placeholder="Contact Sync Utility"
+                    placeholder="Q4 Pipeline"
                     required
                   />
                 </div>
@@ -525,53 +379,13 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
                     Cancel
                   </Button>
                   <Button type="submit">
-                    {editingProject ? "Save changes" : "Create"}
+                    {editingProject ? "Save changes" : "Add"}
                   </Button>
                 </DialogFooter>
               </form>
             </DialogContent>
           </Dialog>
         </div>
-      )}
-
-      {/* Activity feed */}
-      {showActivity && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-base">Recent Activity</CardTitle>
-                <CardDescription>Latest events in your CRM workspace</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm" className="gap-1.5 text-xs" disabled>
-                View all
-                <ArrowUpRight className="size-3" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-0">
-              {filteredActivity.map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={`${item.title}-${item.time}`}>
-                    <div className="flex items-center gap-4 py-3">
-                      <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-muted">
-                        <Icon className="size-4 text-muted-foreground" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium">{item.title}</p>
-                        <p className="text-xs text-muted-foreground">{item.detail}</p>
-                      </div>
-                      <span className="shrink-0 text-xs text-muted-foreground">{item.time}</span>
-                    </div>
-                    {i < filteredActivity.length - 1 ? <Separator /> : null}
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
       )}
     </>
   );
