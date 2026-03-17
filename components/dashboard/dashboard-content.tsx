@@ -38,6 +38,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
+// Content logic for ClientPilot (no Panda references)
 type Metric = {
   label: string;
   value: string;
@@ -68,8 +69,8 @@ type MockProject = {
 };
 
 const metrics: Metric[] = [
-  { label: "Total Users", value: "2,847", trend: "+12.4%", icon: Users, description: "vs last month" },
-  { label: "Active Projects", value: "184", trend: "+6.1%", icon: FolderKanban, description: "vs last month" },
+  { label: "Total Contacts", value: "2,847", trend: "+12.4%", icon: Users, description: "vs last month" },
+  { label: "Active Pipelines", value: "38", trend: "+6.1%", icon: FolderKanban, description: "vs last month" },
   { label: "Revenue", value: "$48,290", trend: "+18.2%", icon: DollarSign, description: "vs last month" },
   { label: "Growth Rate", value: "24.5%", trend: "+3.1%", icon: TrendingUp, description: "vs last month" },
 ];
@@ -77,16 +78,16 @@ const metrics: Metric[] = [
 const onboardingSteps: OnboardingStep[] = [
   { title: "Complete your profile", description: "Add your name and contact details.", href: "/dashboard/settings", done: false },
   { title: "Invite team members", description: "Collaborate by sending invitations.", href: "/dashboard/team", done: false },
-  { title: "Connect an integration", description: "Link external tools and services.", href: "#", done: false },
+  { title: "Set up CRM pipelines", description: "Define your lead/opportunity flows.", href: "#", done: false },
   { title: "Set up billing", description: "Add a payment method for premium.", href: "#", done: false },
 ];
 
 const recentActivity: ActivityItem[] = [
-  { title: "New user signup", detail: "sarah@acme.dev created an account", time: "2 min ago", icon: Users },
-  { title: "Plan upgraded", detail: "starter@pulsehq.com moved to Pro", time: "28 min ago", icon: Zap },
-  { title: "Invoice paid", detail: "INV-2487 was paid — $299.00", time: "1 hr ago", icon: DollarSign },
-  { title: "Team invited", detail: "3 users invited to workspace", time: "3 hr ago", icon: Users },
-  { title: "Project created", detail: "New project 'Q2 Campaign'", time: "5 hr ago", icon: FolderKanban },
+  { title: "New contact added", detail: "jane@company.com added to Contacts", time: "2 min ago", icon: Users },
+  { title: "Pipeline started", detail: "New sales pipeline for Q3", time: "28 min ago", icon: Zap },
+  { title: "Invoice paid", detail: "INV-8921 was paid — $2,499.00", time: "1 hr ago", icon: DollarSign },
+  { title: "Team invited", detail: "2 users invited to team", time: "3 hr ago", icon: Users },
+  { title: "Project created", detail: "New CRM project 'West Coast Leads'", time: "5 hr ago", icon: FolderKanban },
 ];
 
 const quickActions = [
@@ -96,13 +97,13 @@ const quickActions = [
 ];
 
 const weeklyData = [
-  { day: "Mon", users: 42, revenue: 320 },
-  { day: "Tue", users: 58, revenue: 480 },
-  { day: "Wed", users: 35, revenue: 290 },
-  { day: "Thu", users: 72, revenue: 610 },
-  { day: "Fri", users: 63, revenue: 520 },
-  { day: "Sat", users: 28, revenue: 180 },
-  { day: "Sun", users: 18, revenue: 140 },
+  { day: "Mon", users: 18, revenue: 1200 },
+  { day: "Tue", users: 27, revenue: 1480 },
+  { day: "Wed", users: 35, revenue: 1290 },
+  { day: "Thu", users: 22, revenue: 1610 },
+  { day: "Fri", users: 33, revenue: 1520 },
+  { day: "Sat", users: 28, revenue: 1180 },
+  { day: "Sun", users: 18, revenue: 1140 },
 ];
 
 const monthlyRevenue = [
@@ -121,9 +122,9 @@ const monthlyRevenue = [
 ];
 
 const initialMockProjects: MockProject[] = [
-  { id: "p-1", name: "Landing Refresh", owner: "Ava", status: "Draft" },
-  { id: "p-2", name: "Onboarding Flow", owner: "Liam", status: "In Review" },
-  { id: "p-3", name: "Usage Dashboard", owner: "Noah", status: "Published" },
+  { id: "p-1", name: "CRM Dashboard Setup", owner: "Ava", status: "Draft" },
+  { id: "p-2", name: "Contact Import Utility", owner: "Liam", status: "In Review" },
+  { id: "p-3", name: "Account Reports", owner: "Noah", status: "Published" },
 ];
 
 function BarChart({ data }: { data: typeof weeklyData }) {
@@ -274,7 +275,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
               {greeting}, {firstName}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Here&apos;s what&apos;s happening across your workspace today.
+              Here&apos;s what&apos;s happening in your CRM workspace today.
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -395,11 +396,11 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-base">Weekly Signups</CardTitle>
-                    <CardDescription>New user registrations this week</CardDescription>
+                    <CardTitle className="text-base">Weekly Contacts Added</CardTitle>
+                    <CardDescription>New contacts this week</CardDescription>
                   </div>
                   <Badge variant="outline" className="text-xs font-medium">
-                    316 total
+                    171 total
                   </Badge>
                 </div>
               </CardHeader>
@@ -442,7 +443,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
                 <div>
                   <CardTitle className="text-base">Projects</CardTitle>
                   <CardDescription>
-                    Create and update your projects
+                    Create and update your CRM/internal projects
                   </CardDescription>
                 </div>
                 <Button size="sm" onClick={openCreateDialog}>
@@ -494,7 +495,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
                     id="project-name"
                     name="name"
                     defaultValue={editingProject?.name ?? ""}
-                    placeholder="Q2 Campaign"
+                    placeholder="Contact Sync Utility"
                     required
                   />
                 </div>
@@ -540,7 +541,7 @@ export function DashboardContent({ greeting, firstName }: { greeting: string; fi
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-base">Recent Activity</CardTitle>
-                <CardDescription>Latest events across your workspace</CardDescription>
+                <CardDescription>Latest events in your CRM workspace</CardDescription>
               </div>
               <Button variant="ghost" size="sm" className="gap-1.5 text-xs" disabled>
                 View all
