@@ -10,14 +10,14 @@ import {
   Settings,
   Users,
   CreditCard,
+  Contact,
+  Briefcase,
 } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-
-// Keep Panda references out, update to ClientPilot logic as base
 
 type NavItem = {
   label: string;
@@ -28,14 +28,12 @@ type NavItem = {
 
 const sections: { title: string; items: NavItem[] }[] = [
   {
-    title: "CRM",
+    title: "Workspace",
     items: [
-      { label: "Overview", href: "/dashboard", icon: Home },
-      {
-        label: "Feature",
-        href: "/dashboard/feature",
-        icon: Hammer,
-      },
+      { label: "Dashboard", href: "/dashboard", icon: Home },
+      { label: "Contacts", href: "#", icon: Contact, disabled: true },
+      { label: "Companies", href: "#", icon: Briefcase, disabled: true },
+      { label: "Feature Example", href: "/dashboard/feature", icon: Hammer },
     ],
   },
   {
